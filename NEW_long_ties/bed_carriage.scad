@@ -270,12 +270,16 @@ module bed_screw_housing(render_threads=true) {
 
 module bed_screw_housing_top() {
     intersection() {
-        rotate([0,0,-12+1/3*360]) screw_housing_top(frame_width=27.5);
+        union() {
+            rotate([0,0,-12+1/3*360]) screw_housing_top(frame_width=27.5);
+            cylinder(d=26.6,h=6,$fn=80);
+        }
         difference() {
             translate([3,1,0]) cube([25+25.5, 25+22.5, 100],center=true);
             for (i = [0:2]) {
                 rotate([0,0,-12+i*1/3*360]) translate([27.5,0,0]) cylinder(d=10,h=40, $fn=30);
             }
+            rotate([90,0,0]) lifter_threading(0.3);
         }
     }
 }
@@ -605,3 +609,45 @@ endstop_screw_mount();
 
 //bed_attachment_spring_screw();
 //bed_attachment_spring_nut();
+
+
+// DELETE!!!
+//include <../snappy-reprap/config.scad>
+//use <../snappy-reprap/GDMUtils.scad>
+//use <../snappy-reprap/joiners.scad>
+//use <../snappy-reprap/acme_screw.scad>
+//
+//lifter_block_size = 30;
+//offcenter = 0;
+//
+//z_lifter_hole = 10 + 2*slop;
+//z_lifter_arm = 10;
+//
+//
+//
+//module lifter_threading(extra_slop=0) {
+//    // Lifter threading
+//    
+//        yspread(printer_slop*1.5) {
+//            xrot(90) zrot(90) {
+//                acme_threaded_rod(
+//                    d=lifter_rod_diam+2*printer_slop+extra_slop,
+//                    l=lifter_block_size+2*lifter_rod_pitch+0.5,
+//                    pitch=lifter_rod_pitch,
+//                    thread_depth=lifter_rod_pitch/3,
+//                    $fn=32
+//                );
+//            }
+//        }
+//        fwd(lifter_block_size/2-2/2) {
+//            xrot(90) cylinder(h=2.05, d1=lifter_rod_diam-2*lifter_rod_pitch/3, d2=lifter_rod_diam+2, center=true);
+//        }
+//        back(lifter_block_size/2-2/2) {
+//            xrot(90) cylinder(h=2.05, d1=lifter_rod_diam+2, d2=lifter_rod_diam-2*lifter_rod_pitch/3, center=true);
+//        }
+//}
+
+//difference() {
+//    cylinder(d=16,h=10,$fn=6);
+//    rotate([90,0,0]) lifter_threading(extra_slop=0.3);
+//}
